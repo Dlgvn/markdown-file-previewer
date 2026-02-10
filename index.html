@@ -18,8 +18,11 @@
             <button id="theme-toggle" title="Toggle dark/light theme">Dark</button>
         </div>
     </div>
-    <p>Select a Markdown file or type Markdown below to preview its rendered content.</p>
-    <input type="file" id="file-input" accept=".md">
+    <p>Select a Markdown file, drag and drop one, or type Markdown below to preview.</p>
+    <div id="drop-zone">
+        <p>Drag & drop a <strong>.md</strong> file here</p>
+        <input type="file" id="file-input" accept=".md">
+    </div>
     <div class="editor-layout">
         <textarea id="editor" placeholder="Type or paste Markdown here..."></textarea>
         <div id="preview"></div>
@@ -74,16 +77,35 @@
 
         editor.addEventListener('input', renderPreview);
 
-        fileInput.addEventListener('change', function (event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
+        function loadFile(file) {
+            if (!file || !file.name.endsWith('.md')) return;
             const reader = new FileReader();
             reader.onload = function (e) {
                 editor.value = e.target.result;
                 renderPreview();
             };
             reader.readAsText(file);
+        }
+
+        fileInput.addEventListener('change', function (event) {
+            loadFile(event.target.files[0]);
+        });
+
+        const dropZone = document.getElementById('drop-zone');
+
+        dropZone.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            dropZone.classList.add('drag-over');
+        });
+
+        dropZone.addEventListener('dragleave', function () {
+            dropZone.classList.remove('drag-over');
+        });
+
+        dropZone.addEventListener('drop', function (e) {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+            loadFile(e.dataTransfer.files[0]);
         });
     </script>
 </body>
