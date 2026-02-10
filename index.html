@@ -5,13 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Markdown File Previewer</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/styles/github.min.css">
+    <link id="hljs-theme" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/styles/github.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/highlight.min.js"></script>
 </head>
 <body>
 <div class="container">
-    <h1>Markdown File Previewer</h1>
+    <div class="header">
+        <h1>Markdown File Previewer</h1>
+        <button id="theme-toggle" title="Toggle dark/light theme">Dark</button>
+    </div>
     <p>Select a Markdown file or type Markdown below to preview its rendered content.</p>
     <input type="file" id="file-input" accept=".md">
     <div class="editor-layout">
@@ -24,6 +27,23 @@
         const fileInput = document.getElementById('file-input');
         const editor = document.getElementById('editor');
         const preview = document.getElementById('preview');
+        const themeToggle = document.getElementById('theme-toggle');
+        const hljsTheme = document.getElementById('hljs-theme');
+
+        function setTheme(dark) {
+            document.body.classList.toggle('dark', dark);
+            themeToggle.textContent = dark ? 'Light' : 'Dark';
+            hljsTheme.href = dark
+                ? 'https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/styles/github-dark.min.css'
+                : 'https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/styles/github.min.css';
+            localStorage.setItem('theme', dark ? 'dark' : 'light');
+        }
+
+        themeToggle.addEventListener('click', function () {
+            setTheme(!document.body.classList.contains('dark'));
+        });
+
+        setTheme(localStorage.getItem('theme') === 'dark');
 
         marked.setOptions({
             highlight: function (code, lang) {
