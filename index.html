@@ -4,9 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Markdown File Previewer</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
     <h1>Markdown File Previewer</h1>
     <p>Select a Markdown file to preview its rendered content.</p>
+    <input type="file" id="file-input" accept=".md">
+    <div id="preview"></div>
+
+    <script>
+        const fileInput = document.getElementById('file-input');
+        const preview = document.getElementById('preview');
+
+        fileInput.addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const markdown = e.target.result;
+                preview.innerHTML = marked.parse(markdown);
+            };
+            reader.readAsText(file);
+        });
+    </script>
 </body>
 </html>
