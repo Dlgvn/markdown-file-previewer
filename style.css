@@ -73,9 +73,27 @@ p {
     color: #555;
 }
 
-input[type="file"] {
-    display: block;
+#drop-zone {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
     margin-bottom: 1.5rem;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+#drop-zone p {
+    margin-bottom: 0.5rem;
+    color: #888;
+}
+
+#drop-zone.drag-over {
+    border-color: #4a9eff;
+    background-color: rgba(74, 158, 255, 0.05);
+}
+
+input[type="file"] {
+    display: inline-block;
     padding: 0.5rem;
     font-size: 1rem;
     cursor: pointer;
@@ -183,6 +201,15 @@ body.dark #export-pdf:hover {
 
 body.dark p {
     color: #aaa;
+}
+
+body.dark #drop-zone {
+    border-color: #555;
+}
+
+body.dark #drop-zone.drag-over {
+    border-color: #4a9eff;
+    background-color: rgba(74, 158, 255, 0.1);
 }
 
 @media (max-width: 600px) {
