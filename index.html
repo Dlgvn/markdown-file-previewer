@@ -4,13 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Markdown File Previewer</title>
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
+<div class="container">
     <h1>Markdown File Previewer</h1>
     <p>Select a Markdown file to preview its rendered content.</p>
     <input type="file" id="file-input" accept=".md">
     <div id="preview"></div>
+</div>
 
     <script>
         const fileInput = document.getElementById('file-input');
