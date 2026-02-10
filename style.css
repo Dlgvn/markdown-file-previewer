@@ -36,9 +36,29 @@ body {
     color: #333;
 }
 
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
 h1 {
     font-size: 1.8rem;
-    margin-bottom: 0.5rem;
+}
+
+#theme-toggle {
+    padding: 0.4rem 1rem;
+    font-size: 0.9rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+}
+
+#theme-toggle:hover {
+    background: #eee;
 }
 
 p {
@@ -110,6 +130,50 @@ input[type="file"] {
 #preview img {
     max-width: 100%;
     height: auto;
+}
+
+body.dark {
+    background-color: #1e1e1e;
+    color: #ddd;
+}
+
+body.dark #editor {
+    background: #2d2d2d;
+    color: #ddd;
+    border-color: #555;
+}
+
+body.dark #preview {
+    background: #2d2d2d;
+    color: #ddd;
+    border-color: #555;
+}
+
+body.dark #preview code {
+    background: #3a3a3a;
+}
+
+body.dark #preview pre {
+    background: #3a3a3a;
+}
+
+body.dark #preview blockquote {
+    border-left-color: #555;
+    color: #aaa;
+}
+
+body.dark #theme-toggle {
+    background: #333;
+    color: #ddd;
+    border-color: #555;
+}
+
+body.dark #theme-toggle:hover {
+    background: #444;
+}
+
+body.dark p {
+    color: #aaa;
 }
 
 @media (max-width: 600px) {
