@@ -10,14 +10,24 @@
 <body>
 <div class="container">
     <h1>Markdown File Previewer</h1>
-    <p>Select a Markdown file to preview its rendered content.</p>
+    <p>Select a Markdown file or type Markdown below to preview its rendered content.</p>
     <input type="file" id="file-input" accept=".md">
-    <div id="preview"></div>
+    <div class="editor-layout">
+        <textarea id="editor" placeholder="Type or paste Markdown here..."></textarea>
+        <div id="preview"></div>
+    </div>
 </div>
 
     <script>
         const fileInput = document.getElementById('file-input');
+        const editor = document.getElementById('editor');
         const preview = document.getElementById('preview');
+
+        function renderPreview() {
+            preview.innerHTML = marked.parse(editor.value);
+        }
+
+        editor.addEventListener('input', renderPreview);
 
         fileInput.addEventListener('change', function (event) {
             const file = event.target.files[0];
@@ -25,8 +35,8 @@
 
             const reader = new FileReader();
             reader.onload = function (e) {
-                const markdown = e.target.result;
-                preview.innerHTML = marked.parse(markdown);
+                editor.value = e.target.result;
+                renderPreview();
             };
             reader.readAsText(file);
         });
