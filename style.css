@@ -47,7 +47,13 @@ h1 {
     font-size: 1.8rem;
 }
 
-#theme-toggle {
+.header-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+#theme-toggle,
+#export-pdf {
     padding: 0.4rem 1rem;
     font-size: 0.9rem;
     border: 1px solid #ddd;
@@ -57,7 +63,8 @@ h1 {
     cursor: pointer;
 }
 
-#theme-toggle:hover {
+#theme-toggle:hover,
+#export-pdf:hover {
     background: #eee;
 }
 
@@ -162,13 +169,15 @@ body.dark #preview blockquote {
     color: #aaa;
 }
 
-body.dark #theme-toggle {
+body.dark #theme-toggle,
+body.dark #export-pdf {
     background: #333;
     color: #ddd;
     border-color: #555;
 }
 
-body.dark #theme-toggle:hover {
+body.dark #theme-toggle:hover,
+body.dark #export-pdf:hover {
     background: #444;
 }
 
