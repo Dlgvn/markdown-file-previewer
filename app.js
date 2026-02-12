@@ -279,6 +279,40 @@
         isScrolling = false;
     });
 
+    // Fullscreen mode
+    var editorLayout = document.getElementById('editor-layout');
+    var editorPanel = document.getElementById('editor-panel');
+    var previewPanel = document.getElementById('preview-panel');
+    var fullscreenTarget = null;
+
+    function toggleFullscreen(target) {
+        if (fullscreenTarget === target) {
+            // Exit fullscreen
+            editorLayout.classList.remove('fullscreen-editor', 'fullscreen-preview');
+            fullscreenTarget = null;
+        } else {
+            editorLayout.classList.remove('fullscreen-editor', 'fullscreen-preview');
+            if (target === 'editor') {
+                editorLayout.classList.add('fullscreen-editor');
+            } else {
+                editorLayout.classList.add('fullscreen-preview');
+            }
+            fullscreenTarget = target;
+        }
+    }
+
+    document.querySelectorAll('.fullscreen-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            toggleFullscreen(btn.dataset.target);
+        });
+    });
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && fullscreenTarget) {
+            toggleFullscreen(fullscreenTarget);
+        }
+    });
+
     // Keyboard accessibility
     dropZone.addEventListener('keydown', function (e) {
         if (e.key === 'Enter' || e.key === ' ') {

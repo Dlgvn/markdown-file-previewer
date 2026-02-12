@@ -711,6 +711,54 @@ input[type="file"] {
 }
 
 /* ==========================================================================
+   Fullscreen Mode
+   ========================================================================== */
+
+.icon-shrink {
+    display: none;
+}
+
+.fullscreen-editor .icon-expand,
+.fullscreen-preview .icon-expand {
+    display: none;
+}
+
+.fullscreen-editor .icon-shrink,
+.fullscreen-preview .icon-shrink {
+    display: block;
+}
+
+.fullscreen-editor,
+.fullscreen-preview {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    background: var(--color-bg);
+    padding: 0;
+    gap: 0;
+}
+
+.fullscreen-editor #preview-panel,
+.fullscreen-preview #editor-panel {
+    display: none;
+}
+
+.fullscreen-editor #editor-panel,
+.fullscreen-preview #preview-panel {
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+}
+
+.fullscreen-editor #editor,
+.fullscreen-preview #preview {
+    min-height: calc(100vh - 120px);
+}
+
+/* ==========================================================================
    Scrollbar Styling
    ========================================================================== */
 
