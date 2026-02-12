@@ -58,6 +58,19 @@
 
     function renderPreview() {
         preview.innerHTML = marked.parse(editor.value);
+        updateWordCount();
+    }
+
+    // Word and character count
+    var wordCountEl = document.getElementById('word-count');
+    var charCountEl = document.getElementById('char-count');
+
+    function updateWordCount() {
+        var text = editor.value.trim();
+        var words = text ? text.split(/\s+/).length : 0;
+        var chars = editor.value.length;
+        wordCountEl.textContent = words + (words === 1 ? ' word' : ' words');
+        charCountEl.textContent = chars + (chars === 1 ? ' character' : ' characters');
     }
 
     editor.addEventListener('input', renderPreview);
