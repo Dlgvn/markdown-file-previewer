@@ -441,16 +441,105 @@
         }
     });
 
+    // Keyboard shortcuts help modal
+    var shortcutsModal = document.getElementById('shortcuts-modal');
+
+    function openShortcuts() {
+        shortcutsModal.style.display = '';
+    }
+
+    function closeShortcuts() {
+        shortcutsModal.style.display = 'none';
+    }
+
+    document.getElementById('shortcuts-close').addEventListener('click', closeShortcuts);
+    shortcutsModal.addEventListener('click', function (e) {
+        if (e.target === shortcutsModal) closeShortcuts();
+    });
+
+    // Download current file
+    function downloadFile() {
+        var currentTab = tabs.find(function (t) { return t.id === activeTabId; });
+        var name = currentTab && currentTab.name !== 'Untitled' ? currentTab.name : 'document.md';
+        var blob = new Blob([editor.value], { type: 'text/markdown' });
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = name;
+        a.click();
+        URL.revokeObjectURL(a.href);
+    }
+
+    // Global keyboard shortcuts
     document.addEventListener('keydown', function (e) {
         var mod = e.ctrlKey || e.metaKey;
+
+        // Search shortcuts
         if (mod && e.key === 'f') {
             e.preventDefault();
             openSearch();
+            return;
         }
         if (mod && e.key === 'h') {
             e.preventDefault();
             openSearch();
             setTimeout(function () { replaceInput.focus(); }, 50);
+            return;
+        }
+
+        // Formatting shortcuts (only when editor is focused)
+        if (mod && document.activeElement === editor) {
+            if (e.key === 'b') {
+                e.preventDefault();
+                toolbarActions.bold();
+                return;
+            }
+            if (e.key === 'i') {
+                e.preventDefault();
+                toolbarActions.italic();
+                return;
+            }
+            if (e.key === 'k') {
+                e.preventDefault();
+                toolbarActions.link();
+                return;
+            }
+            if (e.shiftKey && (e.key === 'C' || e.key === 'c')) {
+                e.preventDefault();
+                toolbarActions.code();
+                return;
+            }
+        }
+
+        // Download
+        if (mod && e.key === 's') {
+            e.preventDefault();
+            downloadFile();
+            return;
+        }
+
+        // Fullscreen toggle
+        if (mod && e.shiftKey && (e.key === 'F' || e.key === 'f')) {
+            e.preventDefault();
+            toggleFullscreen(fullscreenTarget ? fullscreenTarget : 'editor');
+            return;
+        }
+
+        // Help overlay
+        if (mod && e.key === '/') {
+            e.preventDefault();
+            if (shortcutsModal.style.display === 'none') {
+                openShortcuts();
+            } else {
+                closeShortcuts();
+            }
+            return;
+        }
+
+        // Escape
+        if (e.key === 'Escape') {
+            if (shortcutsModal.style.display !== 'none') {
+                closeShortcuts();
+            }
         }
     });
 
