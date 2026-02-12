@@ -396,6 +396,101 @@ input[type="file"] {
 }
 
 /* ==========================================================================
+   Tab Bar
+   ========================================================================== */
+
+.tab-bar {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    padding: var(--space-1) var(--space-3);
+    background: var(--color-panel-header);
+    border-bottom: 1px solid var(--color-border);
+    overflow-x: auto;
+    transition: background-color var(--transition-slow), border-color var(--transition-slow);
+}
+
+.tab {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-1) var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    font-weight: 500;
+    color: var(--color-text-muted);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.tab:hover {
+    background: var(--color-btn-hover);
+    color: var(--color-text-secondary);
+}
+
+.tab.active {
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    border-color: var(--color-border);
+    font-weight: 600;
+}
+
+.tab-name {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tab-close {
+    font-size: 14px;
+    line-height: 1;
+    color: var(--color-text-muted);
+    border-radius: 3px;
+    padding: 0 2px;
+    cursor: pointer;
+    transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.tab-close:hover {
+    color: var(--color-text-primary);
+    background: var(--color-btn-active);
+}
+
+.tab-new {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--color-text-muted);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.tab-new:hover {
+    background: var(--color-btn-hover);
+    color: var(--color-text-primary);
+}
+
+.tab-new:focus-visible,
+.tab:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-focus-ring);
+}
+
+/* ==========================================================================
    Toolbar
    ========================================================================== */
 

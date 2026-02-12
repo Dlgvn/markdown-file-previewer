@@ -140,13 +140,95 @@
         if (action) action();
     });
 
+    // Tab management
+    var tabBar = document.getElementById('tab-bar');
+    var tabNewBtn = document.getElementById('tab-new');
+    var tabs = [];
+    var activeTabId = null;
+    var nextTabId = 1;
+
+    function createTab(name, content) {
+        var tab = { id: nextTabId++, name: name || 'Untitled', content: content || '' };
+        tabs.push(tab);
+        renderTabs();
+        switchTab(tab.id);
+        return tab;
+    }
+
+    function switchTab(id) {
+        // Save current tab content
+        if (activeTabId !== null) {
+            var current = tabs.find(function (t) { return t.id === activeTabId; });
+            if (current) current.content = editor.value;
+        }
+        activeTabId = id;
+        var tab = tabs.find(function (t) { return t.id === id; });
+        if (tab) {
+            editor.value = tab.content;
+            renderPreview();
+        }
+        renderTabs();
+    }
+
+    function closeTab(id) {
+        if (tabs.length <= 1) return; // keep at least one tab
+        var idx = tabs.findIndex(function (t) { return t.id === id; });
+        if (idx === -1) return;
+        tabs.splice(idx, 1);
+        if (activeTabId === id) {
+            var newIdx = Math.min(idx, tabs.length - 1);
+            switchTab(tabs[newIdx].id);
+        }
+        renderTabs();
+    }
+
+    function renderTabs() {
+        // Remove all tab elements except the + button
+        var existing = tabBar.querySelectorAll('.tab');
+        existing.forEach(function (el) { el.remove(); });
+
+        tabs.forEach(function (tab) {
+            var el = document.createElement('button');
+            el.className = 'tab' + (tab.id === activeTabId ? ' active' : '');
+            el.type = 'button';
+            el.setAttribute('role', 'tab');
+            el.setAttribute('aria-selected', tab.id === activeTabId ? 'true' : 'false');
+
+            var nameSpan = document.createElement('span');
+            nameSpan.className = 'tab-name';
+            nameSpan.textContent = tab.name;
+            el.appendChild(nameSpan);
+
+            if (tabs.length > 1) {
+                var closeBtn = document.createElement('span');
+                closeBtn.className = 'tab-close';
+                closeBtn.textContent = '\u00d7';
+                closeBtn.title = 'Close tab';
+                closeBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    closeTab(tab.id);
+                });
+                el.appendChild(closeBtn);
+            }
+
+            el.addEventListener('click', function () { switchTab(tab.id); });
+            tabBar.insertBefore(el, tabNewBtn);
+        });
+    }
+
+    tabNewBtn.addEventListener('click', function () {
+        createTab();
+    });
+
+    // Create initial tab
+    createTab('Untitled', '');
+
     // File loading
     function loadFile(file) {
         if (!file || !file.name.endsWith('.md')) return;
         var reader = new FileReader();
         reader.onload = function (e) {
-            editor.value = e.target.result;
-            renderPreview();
+            createTab(file.name, e.target.result);
         };
         reader.readAsText(file);
     }
