@@ -362,6 +362,39 @@ input[type="file"] {
     transition: background-color var(--transition-slow), border-color var(--transition-slow);
 }
 
+.panel-header-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+    padding: 2px 8px;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.panel-header-btn:hover {
+    background: var(--color-btn-hover);
+    border-color: var(--color-border);
+}
+
+.panel-header-btn.active {
+    color: var(--color-accent);
+}
+
+.panel-header-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-focus-ring);
+}
+
 /* ==========================================================================
    Toolbar
    ========================================================================== */
