@@ -171,6 +171,32 @@
         loadFile(e.dataTransfer.files[0]);
     });
 
+    // Scroll sync
+    var scrollSyncToggle = document.getElementById('scroll-sync-toggle');
+    var scrollSyncEnabled = true;
+    var isScrolling = false;
+
+    scrollSyncToggle.addEventListener('click', function () {
+        scrollSyncEnabled = !scrollSyncEnabled;
+        scrollSyncToggle.classList.toggle('active', scrollSyncEnabled);
+    });
+
+    editor.addEventListener('scroll', function () {
+        if (!scrollSyncEnabled || isScrolling) return;
+        isScrolling = true;
+        var ratio = editor.scrollTop / (editor.scrollHeight - editor.clientHeight || 1);
+        preview.scrollTop = ratio * (preview.scrollHeight - preview.clientHeight);
+        isScrolling = false;
+    });
+
+    preview.addEventListener('scroll', function () {
+        if (!scrollSyncEnabled || isScrolling) return;
+        isScrolling = true;
+        var ratio = preview.scrollTop / (preview.scrollHeight - preview.clientHeight || 1);
+        editor.scrollTop = ratio * (editor.scrollHeight - editor.clientHeight);
+        isScrolling = false;
+    });
+
     // Keyboard accessibility
     dropZone.addEventListener('keydown', function (e) {
         if (e.key === 'Enter' || e.key === ' ') {
