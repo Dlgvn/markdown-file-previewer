@@ -619,6 +619,28 @@ body.dark {
    Reduced Motion
    ========================================================================== */
 
+/* ==========================================================================
+   Error Banner
+   ========================================================================== */
+
+.error-banner {
+    padding: var(--space-4) var(--space-5);
+    margin-bottom: var(--space-5);
+    background: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+body.dark .error-banner {
+    background: #2d1515;
+    color: #fca5a5;
+    border-color: #5c2020;
+}
+
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
         transition-duration: 0.01ms !important;
