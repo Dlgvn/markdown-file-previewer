@@ -83,6 +83,27 @@
             <div class="tab-bar" id="tab-bar" role="tablist" aria-label="Open files">
                 <button class="tab-new" id="tab-new" type="button" title="New file" aria-label="New file">+</button>
             </div>
+            <div class="search-bar" id="search-bar" style="display:none;" role="search" aria-label="Find and replace">
+                <div class="search-row">
+                    <input type="text" id="search-input" placeholder="Find..." aria-label="Search text">
+                    <span id="search-count" class="search-count"></span>
+                    <button type="button" id="search-prev" title="Previous match" aria-label="Previous match">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+                    </button>
+                    <button type="button" id="search-next" title="Next match" aria-label="Next match">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <label class="search-toggle" title="Case sensitive">
+                        <input type="checkbox" id="search-case"> Aa
+                    </label>
+                    <button type="button" id="search-close" title="Close (Esc)" aria-label="Close search" class="search-close-btn">&times;</button>
+                </div>
+                <div class="search-row">
+                    <input type="text" id="replace-input" placeholder="Replace..." aria-label="Replace text">
+                    <button type="button" id="replace-btn" class="search-action-btn">Replace</button>
+                    <button type="button" id="replace-all-btn" class="search-action-btn">All</button>
+                </div>
+            </div>
             <div class="toolbar" role="toolbar" aria-label="Formatting toolbar">
                 <button type="button" data-action="bold" title="Bold (Ctrl+B)"><strong>B</strong></button>
                 <button type="button" data-action="italic" title="Italic (Ctrl+I)"><em>I</em></button>

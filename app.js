@@ -313,6 +313,147 @@
         }
     });
 
+    // Search and replace
+    var searchBar = document.getElementById('search-bar');
+    var searchInput = document.getElementById('search-input');
+    var replaceInput = document.getElementById('replace-input');
+    var searchCount = document.getElementById('search-count');
+    var searchCase = document.getElementById('search-case');
+    var searchMatches = [];
+    var currentMatchIdx = -1;
+
+    function openSearch() {
+        searchBar.style.display = '';
+        searchInput.focus();
+        searchInput.select();
+    }
+
+    function closeSearch() {
+        searchBar.style.display = 'none';
+        searchMatches = [];
+        currentMatchIdx = -1;
+        searchCount.textContent = '';
+        editor.focus();
+    }
+
+    function findMatches() {
+        var query = searchInput.value;
+        if (!query) {
+            searchMatches = [];
+            currentMatchIdx = -1;
+            searchCount.textContent = '';
+            return;
+        }
+        var text = editor.value;
+        var caseSensitive = searchCase.checked;
+        var flags = caseSensitive ? 'g' : 'gi';
+        var regex = new RegExp(query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), flags);
+        searchMatches = [];
+        var match;
+        while ((match = regex.exec(text)) !== null) {
+            searchMatches.push({ start: match.index, end: match.index + match[0].length });
+        }
+        if (searchMatches.length > 0) {
+            currentMatchIdx = 0;
+            highlightMatch();
+        } else {
+            currentMatchIdx = -1;
+        }
+        updateSearchCount();
+    }
+
+    function updateSearchCount() {
+        if (searchMatches.length === 0 && searchInput.value) {
+            searchCount.textContent = 'No results';
+        } else if (searchMatches.length > 0) {
+            searchCount.textContent = (currentMatchIdx + 1) + ' of ' + searchMatches.length;
+        } else {
+            searchCount.textContent = '';
+        }
+    }
+
+    function highlightMatch() {
+        if (currentMatchIdx < 0 || currentMatchIdx >= searchMatches.length) return;
+        var m = searchMatches[currentMatchIdx];
+        editor.focus();
+        editor.selectionStart = m.start;
+        editor.selectionEnd = m.end;
+        // Scroll to selection
+        var lineHeight = parseInt(getComputedStyle(editor).lineHeight) || 20;
+        var textBefore = editor.value.substring(0, m.start);
+        var lineNum = textBefore.split('\n').length;
+        editor.scrollTop = Math.max(0, (lineNum - 3) * lineHeight);
+    }
+
+    function goToNextMatch() {
+        if (searchMatches.length === 0) return;
+        currentMatchIdx = (currentMatchIdx + 1) % searchMatches.length;
+        highlightMatch();
+        updateSearchCount();
+    }
+
+    function goToPrevMatch() {
+        if (searchMatches.length === 0) return;
+        currentMatchIdx = (currentMatchIdx - 1 + searchMatches.length) % searchMatches.length;
+        highlightMatch();
+        updateSearchCount();
+    }
+
+    function replaceCurrent() {
+        if (currentMatchIdx < 0 || currentMatchIdx >= searchMatches.length) return;
+        var m = searchMatches[currentMatchIdx];
+        editor.value = editor.value.substring(0, m.start) + replaceInput.value + editor.value.substring(m.end);
+        renderPreview();
+        findMatches();
+    }
+
+    function replaceAll() {
+        if (searchMatches.length === 0) return;
+        var query = searchInput.value;
+        var caseSensitive = searchCase.checked;
+        var flags = caseSensitive ? 'g' : 'gi';
+        var regex = new RegExp(query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), flags);
+        editor.value = editor.value.replace(regex, replaceInput.value);
+        renderPreview();
+        findMatches();
+    }
+
+    searchInput.addEventListener('input', findMatches);
+    searchCase.addEventListener('change', findMatches);
+    document.getElementById('search-next').addEventListener('click', goToNextMatch);
+    document.getElementById('search-prev').addEventListener('click', goToPrevMatch);
+    document.getElementById('replace-btn').addEventListener('click', replaceCurrent);
+    document.getElementById('replace-all-btn').addEventListener('click', replaceAll);
+    document.getElementById('search-close').addEventListener('click', closeSearch);
+
+    searchInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            goToNextMatch();
+        } else if (e.key === 'Escape') {
+            closeSearch();
+        }
+    });
+
+    replaceInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            closeSearch();
+        }
+    });
+
+    document.addEventListener('keydown', function (e) {
+        var mod = e.ctrlKey || e.metaKey;
+        if (mod && e.key === 'f') {
+            e.preventDefault();
+            openSearch();
+        }
+        if (mod && e.key === 'h') {
+            e.preventDefault();
+            openSearch();
+            setTimeout(function () { replaceInput.focus(); }, 50);
+        }
+    });
+
     // Keyboard accessibility
     dropZone.addEventListener('keydown', function (e) {
         if (e.key === 'Enter' || e.key === ' ') {
