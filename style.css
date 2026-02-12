@@ -383,6 +383,23 @@ input[type="file"] {
     color: var(--color-text-muted);
 }
 
+.editor-status {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-4);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    border-top: 1px solid var(--color-border);
+    background: var(--color-panel-header);
+    user-select: none;
+    transition: background-color var(--transition-slow), border-color var(--transition-slow);
+}
+
+.status-sep {
+    color: var(--color-border);
+}
+
 #preview {
     flex: 1;
     background: var(--color-surface);
